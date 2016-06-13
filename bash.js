@@ -12,6 +12,7 @@ process.stdin.on('data', function (data) {
 	arr = arr.slice(1, arr.length);
 	var args = arr.join(" ");
 	var stdin = null;
+	console.log(cmdList);
 	Commands[firstCMD](stdin, args, cmdList);
 
 });

@@ -9,7 +9,12 @@ var done = function(output, cmdList){
 	}
 	else {
 		var shortened = cmdList.slice(1, cmdList.length)
-		bashPrompts[cmdList[0]](output, null, shortened);
+		if (cmdList[0].indexOf("grep") !== -1) {
+			var arr = cmdList[0].split(" ");
+			bashPrompts[arr[0]](output, arr[1], shortened);
+		} else {
+			bashPrompts[cmdList[0]](output, null, shortened);
+		}
 	}
 
 }
@@ -187,6 +192,16 @@ var bashPrompts = {
 				done(response.body, cmdList)
 			}
 		})
+	},
+	grep: function(stdin, args, cmdList){
+			var str = stdin.toString();
+			var arr = str.split('\n');		
+			var returnStr = '';
+			var word = new RegExp(args);
+			arr.forEach(function(line){
+				if (line.match(word)) returnStr += line + '\n'
+			})
+			done(returnStr, cmdList)	
 	},
 }
 
